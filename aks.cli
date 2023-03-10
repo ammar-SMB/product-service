@@ -1,0 +1,28 @@
+az group create --name rg-matman-poc --location southcentralus
+
+az acr create --resource-group rg-matman-poc --name acrmatmanpoc --sku Basic
+
+az acr login --name acrmatmanpoc
+
+az acr list --resource-group rg-matman-poc --query "[].{acrLoginServer:loginServer}" --output table
+
+acrmatmanpoc.azurecr.io
+
+docker tag 
+
+az acr repository list --name acrmatmanpoc --output table
+
+az acr repository show-tags --name acrmatmanpoc --repository demoapi --output table
+
+az acr repository show-tags --name acrmatmanpoc --repository angular-app --output table
+
+az aks create --resource-group rg-matman-poc --name aks-matman-poc --node-count 2 --generate-ssh-keys --attach-acr acrmatmanpoc
+
+az aks get-credentials --resource-group rg-matman-poc --name aks-matman-poc
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-basic --set controller.replicaCount=2
+
+http://demoapi-service.default.svc.cluster.local
+

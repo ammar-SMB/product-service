@@ -17,6 +17,18 @@ builder.Services.AddDbContext<ProductContext>(options =>
 //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductRepository, MockProductRepository>();
 
+builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularClient",
+                  builder =>
+                  {
+                      builder
+                      .AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+                  });
+            });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,10 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// if (app.Environment.IsDevelopment())
-// {
-//     builder.Services.AddScoped<IProductRepository, MockProductRepository>();
-// }
+app.UseCors("AllowAngularClient");
 
 app.UseHttpsRedirection();
 
@@ -38,3 +47,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+  
+// if (app.Environment.IsDevelopment())
+// {
+//     builder.Services.AddScoped<IProductRepository, MockProductRepository>();
+// }
+

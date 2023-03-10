@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-deployment
+  labels:
+    app: product
+spec:
+  replicas: 3 # number of replicas to create
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - name: product-cont
+        image: acrmatmanpoc.azurecr.io/product:latest # replace with your web API image name
+        imagePullPolicy: IfNotPresent # pull image only if it doesn't exist
+        ports:
+          - containerPort: 3551
+            protocol: TCP
+        env:
+          - name: ASPNETCORE_URLS
+            value: http://+:3551

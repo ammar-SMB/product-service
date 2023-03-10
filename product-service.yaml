@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  labels:
+    app: product
+spec:
+  selector:
+    app: product
+  ports:
+  - name: http
+    protocol: TCP
+    port: 3551
+    targetPort: 3551
+  type: LoadBalancer
