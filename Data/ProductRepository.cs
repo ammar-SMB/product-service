@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace product_service.Data;
+namespace product.Data;
 public class ProductRepository : IProductRepository
 {
     private readonly ProductContext _context;

@@ -1,4 +1,4 @@
-namespace product_service.Data;
+namespace product.Data;
 public class MockProductRepository : IProductRepository
 {
     private readonly List<Product> _products;

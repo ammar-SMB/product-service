@@ -1,5 +1,5 @@
 
-namespace product_service.Data;
+namespace product.Data;
 
 public interface IProductRepository
 {

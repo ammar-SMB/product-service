@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using product_service.Data;
+using product.Data;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace product_service.Data;
+namespace product.Data;
 public class ProductContext : DbContext
 {
     public ProductContext(DbContextOptions<ProductContext> options) : base(options)
