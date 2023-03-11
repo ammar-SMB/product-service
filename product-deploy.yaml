@@ -19,8 +19,8 @@ spec:
         image: acrmatmanpoc2.azurecr.io/product:latest # replace with your web API image name
         imagePullPolicy: IfNotPresent # pull image only if it doesn't exist
         ports:
-          - containerPort: 3551
+          - containerPort: 5000
             protocol: TCP
         env:
           - name: ASPNETCORE_URLS
-            value: http://+:3551
+            value: http://+:5000

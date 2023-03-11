@@ -11,5 +11,5 @@ spec:
   - name: http
     protocol: TCP
     port: 3551
-    targetPort: 3551
+    targetPort: 5000
   type: LoadBalancer
