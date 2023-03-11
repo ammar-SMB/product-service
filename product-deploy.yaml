@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: product-cont
-        image: acrmatmanpoc.azurecr.io/product:latest # replace with your web API image name
+        image: acrmatmanpoc2.azurecr.io/product:latest # replace with your web API image name
         imagePullPolicy: IfNotPresent # pull image only if it doesn't exist
         ports:
           - containerPort: 3551
