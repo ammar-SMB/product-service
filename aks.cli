@@ -1,37 +1,74 @@
-az group create --name rg-matman-poc --location southcentralus
+az login
 
-az acr create --resource-group rg-matman-poc --name acrmatmanpoc2 --sku Basic
+az group create --name rg-ammar-poc --location southcentralus
 
-az acr login --name acrmatmanpoc2
+az acr create --resource-group rg-ammar-poc --name acrammarpoc --sku Basic
 
-az acr list --resource-group rg-matman-poc --query "[].{acrLoginServer:loginServer}" --output table
+az acr login --name acrammarpoc
 
-acrmatmanpoc2.azurecr.io
+az acr list --resource-group rg-ammar-poc --query "[].{acrLoginServer:loginServer}" --output table
+
+acrammarpoc.azurecr.io
 
 docker tag 
 
-az acr repository list --name acrmatmanpoc2 --output table
+az acr repository list --name acrammarpoc --output table
 
-az acr repository show-tags --name acrmatmanpoc2 --repository demoapi --output table
+az acr repository show-tags --name acrammarpoc --repository demoapi --output table
 
-az acr repository show-tags --name acrmatmanpoc2 --repository angular-app --output table
+az acr repository show-tags --name acrammarpoc --repository angular-app --output table
 
-az aks create --resource-group rg-matman-poc --name aks-matman-poc --node-count 2 --generate-ssh-keys --attach-acr acrmatmanpoc2
+az aks create --resource-group rg-ammar-poc --name aks-ammar-poc --node-count 2 --generate-ssh-keys --attach-acr acrammarpoc
 
-az aks get-credentials --resource-group rg-matman-poc --name aks-matman-poc
+az aks get-credentials --resource-group rg-ammar-poc --name aks-ammar-poc
 
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+kubectl create namespace ingress-basic
+
+helm repo add ingress-basic https://kubernetes.github.io/ingress-nginx
 
 helm repo update
 
 helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-basic --set controller.replicaCount=2
 
-az aks get-credentials --resource-group rg-matman-poc --name aks-matman-poc
+kubectl logs nginx-ingress-ingress-nginx-controller -n ingress-basic
+
+--------------------
+
+az network public-ip create --resource-group rg-ammar-poc --name ammar.fluor.com --sku Standard --allocation-method Static
+
+az network lb create --resource-group rg-ammar-poc --name ammar-poc-load-balancer --sku Standard --public-ip-address ammar.fluor.com
+
+az network public-ip show --resource-group rg-ammar-poc --name ammar.fluor.com --query ipAddress --output tsv
+
+az network nsg rule list -g mc_rg-ammar-poc_aks-ammar-poc_southcentralus --nsg-name aks-agentpool-29872233-nsg
+
+az aks show --resource-group rg-ammar-poc  --name aks-ammar-poc --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table
+
+aks-ammar-rg-ammar-poc-08e443-kk1huwbg.hcp.southcentralus.azmk8s.io
 
 
 
-http://demoapi-service.default.svc.cluster.local
 
 
 
 
+
+
+REGISTRY_NAME=acrammarpoc
+SOURCE_REGISTRY=k8s.gcr.io
+CONTROLLER_IMAGE=ingress-nginx/controller
+CONTROLLER_TAG=v1.2.1
+PATCH_IMAGE=ingress-nginx/kube-webhook-certgen
+PATCH_TAG=v1.1.1
+DEFAULTBACKEND_IMAGE=defaultbackend-amd64
+DEFAULTBACKEND_TAG=1.5
+
+az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$CONTROLLER_IMAGE:$CONTROLLER_TAG --image $CONTROLLER_IMAGE:$CONTROLLER_TAG
+az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$PATCH_IMAGE:$PATCH_TAG --image $PATCH_IMAGE:$PATCH_TAG
+az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$DEFAULTBACKEND_IMAGE:$DEFAULTBACKEND_TAG --image $DEFAULTBACKEND_IMAGE:$DEFAULTBACKEND_TAG
+
+kubectl run -it --rm aks-ingress-test --image=mcr.microsoft.com/dotnet/runtime-deps:6.0 --namespace ingress-basic
+
+apt-get update && apt-get install -y curl
+
+curl -L http://20.225.14.158/product
