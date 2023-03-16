@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: matman-poc-ingress
+  name: ammar-poc-ingress
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/service-upstream: "matman-poc-load-balancer"
+    nginx.ingress.kubernetes.io/service-upstream: "ammar-poc-load-balancer"
 spec:
   ingressClassName: nginx
   rules:
@@ -19,30 +19,30 @@ spec:
             name: product-service
             port:
               number: 5000
-  - http:
-      paths:
-      - path: /order
-        pathType: Prefix
-        backend:
-          service:
-            name: order-service
-            port:
-              number: 5035
-  - http:
-      paths:
-      - path: /usermgmt
-        pathType: Prefix
-        backend:
-          service:
-            name: usermgmt-service
-            port:
-              number: 5037
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: angular-app-service
-            port:
-              number: 80
+  # - http:
+  #     paths:
+  #     - path: /order
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: order-service
+  #           port:
+  #             number: 5035
+  # - http:
+  #     paths:
+  #     - path: /usermgmt
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: usermgmt-service
+  #           port:
+  #             number: 5037
+  # - http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: angular-app-service
+  #           port:
+  #             number: 80

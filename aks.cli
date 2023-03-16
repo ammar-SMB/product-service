@@ -10,13 +10,15 @@ az acr list --resource-group rg-ammar-poc --query "[].{acrLoginServer:loginServe
 
 acrammarpoc.azurecr.io
 
-docker tag 
+#docker tag 
+
+az acr login -n acrammarpoc
+
+docker push acrammarpoc.azurecr.io/product:latest
 
 az acr repository list --name acrammarpoc --output table
 
-az acr repository show-tags --name acrammarpoc --repository demoapi --output table
-
-az acr repository show-tags --name acrammarpoc --repository angular-app --output table
+az acr repository show-tags --name acrammarpoc --repository product --output table
 
 az aks create --resource-group rg-ammar-poc --name aks-ammar-poc --node-count 2 --generate-ssh-keys --attach-acr acrammarpoc
 
