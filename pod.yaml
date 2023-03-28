@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: product
+  labels:
+    app: product
+spec:
+  containers:
+  - image: "acrammarpoc.azurecr.io/product:latest"
+    name: product-image
+    ports:
+    - containerPort: 80
+      protocol: TCP
